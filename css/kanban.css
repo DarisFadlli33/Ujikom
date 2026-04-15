@@ -1,0 +1,232 @@
+/* ===== KANBAN BOARD ===== */
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.kanban-col {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  min-height: 360px;
+  transition: var(--transition);
+}
+
+.kanban-col:hover { box-shadow: var(--shadow); }
+
+.kanban-col-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.kanban-col-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+
+.col-open .kanban-col-header::before     { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.col-progress .kanban-col-header::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.col-done .kanban-col-header::before     { background: linear-gradient(90deg, #10b981, #34d399); }
+
+.kanban-col-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kanban-col-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+
+.col-open .kanban-col-dot     { background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.5); }
+.col-progress .kanban-col-dot { background: #3b82f6; box-shadow: 0 0 8px rgba(59,130,246,0.5); }
+.col-done .kanban-col-dot     { background: #10b981; box-shadow: 0 0 8px rgba(16,185,129,0.5); }
+
+.col-count {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.kanban-col-body {
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+/* Task Card */
+.task-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.task-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+
+.task-card.task-open::before        { background: #f59e0b; }
+.task-card.task-in_progress::before { background: #3b82f6; }
+.task-card.task-done::before        { background: #10b981; }
+.task-card.task-admin::before       { background: var(--danger); }
+
+.task-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover);
+}
+
+.task-card.task-overdue {
+  background: rgba(239,68,68,0.03);
+  border-color: rgba(239,68,68,0.2);
+}
+
+[data-theme="dark"] .task-card.task-overdue {
+  background: rgba(239,68,68,0.06);
+}
+
+.task-card.task-admin {
+  background: rgba(239,68,68,0.02);
+}
+
+[data-theme="dark"] .task-card.task-admin {
+  background: rgba(239,68,68,0.05);
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+  flex: 1;
+}
+
+.card-badges { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+
+.card-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.deadline-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 3px 9px;
+  margin-bottom: 10px;
+}
+
+.deadline-chip--overdue {
+  background: var(--danger-bg);
+  border-color: rgba(239,68,68,0.3);
+  color: var(--danger);
+}
+
+.card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* Status Pill */
+.status-pill {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.status-open        { background: rgba(245,158,11,0.12); color: #92400e; }
+.status-in_progress { background: rgba(59,130,246,0.12); color: #1d4ed8; }
+.status-done        { background: rgba(16,185,129,0.12); color: #065f46; }
+.status-tag         { background: var(--accent-light); color: var(--accent-dark); }
+
+[data-theme="dark"] .status-open        { color: #fbbf24; }
+[data-theme="dark"] .status-in_progress { color: #60a5fa; }
+[data-theme="dark"] .status-done        { color: #34d399; }
+[data-theme="dark"] .status-tag         { color: var(--accent); }
+
+/* Admin Badge */
+.badge-admin {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(220,38,38,0.3);
+}
+
+/* Kanban empty */
+.kanban-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--text-light);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 24px;
+  text-align: center;
+  margin: 4px 0;
+}
+
+.kanban-empty-icon { font-size: 1.5rem; margin-bottom: 6px; opacity: 0.5; }

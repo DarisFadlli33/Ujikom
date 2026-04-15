@@ -1,0 +1,5 @@
+# Cegah eksekusi PHP di folder attachments
+php_flag engine off
+
+# Izinkan akses file langsung (download/view)
+Options -Indexes

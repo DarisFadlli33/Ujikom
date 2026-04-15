@@ -1,0 +1,307 @@
+/* ===== MODALS ===== */
+.modal-content {
+  border-radius: 20px !important;
+  border: 1px solid var(--border) !important;
+  background: var(--surface) !important;
+  box-shadow: var(--shadow-lg) !important;
+  overflow: hidden;
+}
+
+.modal-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 24px;
+}
+
+.modal-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text) !important;
+}
+
+.modal-body { padding: 24px; }
+
+.modal-footer {
+  border-top: 1px solid var(--border);
+  padding: 14px 24px;
+  gap: 8px;
+  background: var(--surface-2);
+}
+
+/* Colored Headers */
+.modal-header-accent {
+  background: var(--accent-grad);
+  border: none;
+  padding: 18px 24px;
+}
+
+.modal-header-danger {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  border: none;
+  padding: 18px 24px;
+}
+
+.modal-header-success {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  padding: 18px 24px;
+}
+
+.modal-title-white { color: #fff !important; }
+
+/* Icon Wrapper */
+.modal-icon-wrap {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Detail Row */
+.detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.detail-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--text-muted);
+}
+
+.detail-value {
+  font-size: 0.875rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Attachment in Modal */
+.modal-attach-preview {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.modal-attach-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  background: var(--bg);
+  display: block;
+}
+
+.modal-attach-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+}
+
+.modal-attach-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.modal-attach-type {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Attach Download Button */
+.attach-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--accent);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.attach-download-btn:hover {
+  background: var(--accent-hover);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* Delete Confirmation Modal Specific Styling */
+.modal-header-danger .modal-icon-wrap {
+  background: rgba(255,255,255,0.25);
+  animation: pulse-danger 2s ease-in-out infinite;
+}
+
+/* ── Delete Modal Enhanced ── */
+#deleteConfirmModal .modal-body {
+  padding: 32px 24px !important;
+}
+
+#deleteConfirmModal #deleteModalMessage {
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+#deleteConfirmModal #deleteModalMessage strong {
+  font-weight: 700;
+  color: var(--text);
+}
+
+#deleteConfirmModal #deleteModalDesc {
+  font-style: italic;
+  letter-spacing: 0.3px;
+  line-height: 1.7;
+}
+
+#deleteConfirmModal .modal-footer {
+  padding: 16px 24px;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Delete Button Enhancements */
+#deleteConfirmModal .btn-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+#deleteConfirmModal .btn-danger:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+}
+
+#deleteConfirmModal .btn-danger:active {
+  transform: translateY(0);
+}
+
+#deleteConfirmModal .btn-outline-secondary {
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+#deleteConfirmModal .btn-outline-secondary:hover {
+  background: var(--surface-2);
+}
+
+/* Modal Animation */
+.modal.fade #deleteConfirmModal {
+  opacity: 0;
+  scale: 0.95;
+  transition: opacity 0.3s ease, scale 0.3s ease;
+}
+
+.modal.show #deleteConfirmModal {
+  opacity: 1;
+  scale: 1;
+}
+
+/* Pulse Animation for Danger Icon */
+@keyframes pulse-danger {
+  0%, 100% {
+    background: rgba(255,255,255,0.25);
+  }
+  50% {
+    background: rgba(255,255,255,0.35);
+  }
+}
+
+@keyframes pulse-danger {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Backdrop */
+.modal-backdrop { backdrop-filter: blur(4px); }
+
+/* Animate in */
+.modal.fade .modal-dialog {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease !important;
+}
+
+.modal-backdrop.show { background: rgba(2,6,23,0.65) !important; }
+[data-theme="dark"] .modal-backdrop.show { background: rgba(0,0,0,0.8) !important; }
+
+/* ── Delete Confirmation Modal ── */
+#deleteConfirmModal .modal-body {
+  background: var(--surface);
+}
+
+#deleteConfirmModal #deleteModalMessage {
+  color: var(--danger);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+#deleteConfirmModal .btn-danger {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(239,68,68,0.35);
+  transition: all 0.2s ease;
+}
+#deleteConfirmModal .btn-danger:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(239,68,68,0.45);
+}
+#deleteConfirmModal .btn-outline-secondary {
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+/* ── Completion Attachment Section ── */
+#ad-completion-section .detail-label {
+  color: var(--success);
+}
+#ad-completion-section .modal-attach-preview {
+  border-color: var(--success);
+}
+
+/* ── Bulk Action Bar ── */
+.bulk-action-bar {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  color: white;
+  font-size: .85rem;
+  font-weight: 600;
+}
+.bulk-action-bar.visible { display: flex; }
+.bulk-spacer { flex: 1; }
+.bulk-count  { font-size: .85rem; font-weight: 700; }
+.bulk-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border: none; border-radius: 7px; cursor: pointer;
+  font-size: .8rem; font-weight: 700; transition: all .18s ease;
+  background: rgba(255,255,255,.2); color: #fff;
+}
+.bulk-btn:hover { background: rgba(255,255,255,.32); transform: translateY(-1px); }
+.bulk-btn--danger { background: rgba(239,68,68,.85); }
+.bulk-btn--danger:hover { background: rgba(239,68,68,1); }
+
+/* ── Row Selected highlight ── */
+tr.row-selected td { background: rgba(99,102,241,.07) !important; }
