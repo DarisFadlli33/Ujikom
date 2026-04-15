@@ -26,6 +26,8 @@
   --surface:        #ffffff;
   --surface-2:      #f8fafc;
   --bg:             #f1f5f9;
+  --bg-secondary:   #f8fafc;
+  --bg-tertiary:    #e2e8f0;
   --navbar-bg:      #0f172a;
 
   --radius:         14px;
@@ -71,6 +73,8 @@
   --surface:        #0f172a;
   --surface-2:      #1e293b;
   --bg:             #020617;
+  --bg-secondary:   #1e293b;
+  --bg-tertiary:    #334155;
   --navbar-bg:      #020617;
 
   --shadow-xs:      0 1px 2px rgba(0,0,0,0.4);

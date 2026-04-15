@@ -177,21 +177,15 @@ $statuses = $pdo->query("SELECT * FROM task_statuses ORDER BY id")->fetchAll();
           </div>
           <div class="col-12">
             <label class="form-label">
-              Ditugaskan ke <span style="color:var(--danger)">*</span>
-              <span id="assignCountLabel" style="font-weight:500;color:var(--text-muted);margin-left:8px;font-size:.78rem;">Pilih user yang dituju</span>
+              Tugas Khusus <span style="color:var(--danger)">*</span>
+              <span id="assignCountLabel" style="font-weight:500;color:var(--text-muted);margin-left:8px;font-size:.78rem;">Cari dan pilih user</span>
             </label>
-            <div class="select-all-users-row">
-              <input type="checkbox" id="selectAllUsers" style="width:15px;height:15px;accent-color:var(--accent);cursor:pointer;">
-              <label for="selectAllUsers" style="cursor:pointer;margin:0;">Pilih Semua User</label>
+            <div style="position:relative;">
+              <input type="text" id="userSearch" class="form-control" placeholder="Cari user..." autocomplete="off">
+              <div id="userSuggestions" style="position:absolute;top:100%;left:0;right:0;border:1px solid var(--border);border-radius:6px;max-height:200px;overflow-y:auto;display:none;z-index:1000;margin-top:4px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+              </div>
             </div>
-            <div class="user-checkboxes">
-              <?php foreach ($allUsers as $u): ?>
-                <label class="user-checkbox-item">
-                  <input type="checkbox" class="user-assign-cb" name="assigned_user_ids[]" value="<?= $u['id'] ?>">
-                  <div class="user-avatar-mini"><?= strtoupper(substr($u['username'], 0, 1)) ?></div>
-                  <span><?= htmlspecialchars($u['username']) ?></span>
-                </label>
-              <?php endforeach; ?>
+            <div id="selectedUsersContainer" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;">
             </div>
           </div>
           <div class="col-12 d-flex gap-2 pt-1">
@@ -793,6 +787,92 @@ $statuses = $pdo->query("SELECT * FROM task_statuses ORDER BY id")->fetchAll();
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../js/app.js"></script>
+  <script>
+    // User search autocomplete - multiple selection
+    const allUsers = <?= json_encode($allUsers) ?>;
+    const userSearchInput = document.getElementById('userSearch');
+    const suggestionBox = document.getElementById('userSuggestions');
+    const selectedUsersContainer = document.getElementById('selectedUsersContainer');
+    const selectedUsers = {}; // Store { userId: username }
+
+    // Get computed CSS variable values for light/dark mode support
+    function getCSSVariable(varName) {
+      return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
+
+    if (userSearchInput) {
+      userSearchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        
+        if (query.length === 0) {
+          suggestionBox.style.display = 'none';
+          return;
+        }
+        
+        const filtered = allUsers.filter(u => 
+          u.username.toLowerCase().includes(query) && !selectedUsers.hasOwnProperty(u.id)
+        );
+        
+        if (filtered.length === 0) {
+          suggestionBox.innerHTML = '<div style="padding:12px;color:var(--text-muted);text-align:center;">Tidak ada user ditemukan</div>';
+          suggestionBox.style.display = 'block';
+          return;
+        }
+        
+        const bgSecondary = getCSSVariable('--bg-secondary');
+        const bgTertiary = getCSSVariable('--bg-tertiary');
+        
+        // Apply background to container
+        suggestionBox.style.background = bgSecondary;
+        suggestionBox.style.opacity = '1';
+        
+        suggestionBox.innerHTML = filtered.map(u => `
+          <div onclick="selectUser(${u.id}, '${u.username}')" style="padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.2s;background:${bgSecondary} !important;opacity:1 !important;" onmouseover="this.style.background='${bgTertiary}'" onmouseout="this.style.background='${bgSecondary}'">
+            <div style="font-weight:500;">${u.username}</div>
+          </div>
+        `).join('');
+        suggestionBox.style.display = 'block';
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('[id="userSearch"], #userSuggestions')) {
+          suggestionBox.style.display = 'none';
+        }
+      });
+    }
+
+    function selectUser(userId, username) {
+      if (selectedUsers.hasOwnProperty(userId)) return; // Avoid duplicates
+      
+      selectedUsers[userId] = username;
+      userSearchInput.value = '';
+      updateChips();
+      suggestionBox.style.display = 'none';
+    }
+
+    function removeUser(userId) {
+      delete selectedUsers[userId];
+      updateChips();
+    }
+
+    function updateChips() {
+      const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6'];
+      let colorIndex = 0;
+      
+      selectedUsersContainer.innerHTML = Object.entries(selectedUsers).map(([userId, username]) => {
+        const bgColor = colors[colorIndex % colors.length];
+        const chip = `
+          <span style="display:inline-flex;align-items:center;gap:6px;background:${bgColor} !important;opacity:1 !important;color:white !important;padding:8px 14px;border-radius:20px;font-size:.85rem;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.15);border:none;">
+            <span style="display:inline-block;">${username}</span>
+            <button type="button" onclick="removeUser(${userId})" style="background:none !important;border:none !important;color:white !important;cursor:pointer;padding:0;font-weight:bold;display:inline-flex;align-items:center;justify-content:center;">✕</button>
+          </span>
+          <input type="hidden" name="assigned_user_ids[]" value="${userId}">
+        `;
+        colorIndex++;
+        return chip;
+      }).join('');
+    }
+  </script>
   <script>
     // Mobile menu toggle
     function toggleMenu(e) {
