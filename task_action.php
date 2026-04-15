@@ -12,7 +12,15 @@ if ($action === 'add') {
     $deadline = $_POST['deadline'] ?? null;
     $ids      = array_filter(array_map('intval', (array)($_POST['assigned_user_ids'] ?? [])));
     if (!empty($_POST['assigned_user_id'])) $ids[] = intval($_POST['assigned_user_id']);
-    if (!$title || empty($ids) || !$deadline) back('Judul, user, dan tenggat wajib diisi.', 'danger');
+    
+    // Jika tidak ada user dipilih, berikan ke semua user
+    if (empty($ids)) {
+        $allUsers = $pdo->query("SELECT id FROM users WHERE role_id=(SELECT id FROM roles WHERE name='user')");
+        $ids = array_values(array_column($allUsers->fetchAll(PDO::FETCH_ASSOC), 'id'));
+        if (empty($ids)) back('Tidak ada user dalam sistem.', 'danger');
+    }
+    
+    if (!$title || empty($ids) || !$deadline) back('Judul dan tenggat wajib diisi.', 'danger');
     $open_id = $pdo->query("SELECT id FROM task_statuses WHERE code='open'")->fetchColumn();
     $attach  = null;
     if (!empty($_FILES['attachment']['name'])) {

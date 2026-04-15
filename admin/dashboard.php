@@ -177,8 +177,8 @@ $statuses = $pdo->query("SELECT * FROM task_statuses ORDER BY id")->fetchAll();
           </div>
           <div class="col-12">
             <label class="form-label">
-              Tugas Khusus <span style="color:var(--danger)">*</span>
-              <span id="assignCountLabel" style="font-weight:500;color:var(--text-muted);margin-left:8px;font-size:.78rem;">Cari dan pilih user</span>
+              Tugas Khusus <span style="color:var(--text-muted);font-weight:400;">(opsional - jika kosong diberikan ke semua user)</span>
+              <span id="assignCountLabel" style="font-weight:500;color:var(--text-muted);margin-left:8px;font-size:.78rem;">Cari dan pilih user spesifik</span>
             </label>
             <div style="position:relative;">
               <input type="text" id="userSearch" class="form-control" placeholder="Cari user..." autocomplete="off">
